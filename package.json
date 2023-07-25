@@ -5,7 +5,7 @@
   "type": "module",
   "browser": "./dist/main.js",
   "scripts": {
-    "build": "babel ./src --out-dir ./dist --extensions .ts",
+    "build": "tsc --project ./tsconfig.build.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,11 +27,7 @@
   },
   "homepage": "https://github.com/yishn/typed-model#readme",
   "devDependencies": {
-    "@babel/cli": "^7.22.9",
-    "@babel/core": "^7.22.9",
-    "@babel/preset-typescript": "^7.22.5",
     "@openui5/types": "^1.116.0",
-    "babel-plugin-ui5-esm": "^1.0.1",
     "typescript": "^5.1.6"
   }
 }
