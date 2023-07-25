@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "rootDir": "./",
+    "target": "es2022",
+    "module": "es2022",
+    "moduleResolution": "node16",
+    "strict": true,
+    "sourceMap": true,
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "typeRoots": ["./node_modules/@types", "./node_modules/@openui5/types"]
+  }
+}
