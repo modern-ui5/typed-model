@@ -5,8 +5,9 @@
   "type": "module",
   "browser": "./dist/main.js",
   "scripts": {
-    "build": "tsc --project ./tsconfig.build.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --project ./tsconfig.json --noEmit && tsc --project ./tsconfig.build.json",
+    "build-test": "babel ./src --out-dir ./test_dist --extensions .ts && tsc --project ./tsconfig.test.json",
+    "test": "npm run build-test && wdio run ./wdio.conf.js"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,19 @@
   },
   "homepage": "https://github.com/yishn/typed-model#readme",
   "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-typescript": "^7.22.5",
+    "@babel/register": "^7.22.5",
     "@openui5/types": "^1.116.0",
-    "typescript": "^5.1.6"
+    "@wdio/browser-runner": "^8.13.12",
+    "@wdio/cli": "^8.13.12",
+    "@wdio/mocha-framework": "^8.12.1",
+    "@wdio/spec-reporter": "^8.12.2",
+    "babel-plugin-ui5-esm": "^1.0.1",
+    "chromedriver": "^115.0.0",
+    "typescript": "^5.1.6",
+    "wdio-chromedriver-service": "^8.1.1"
   }
 }

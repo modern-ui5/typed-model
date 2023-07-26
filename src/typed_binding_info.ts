@@ -2,7 +2,7 @@ import {
   AggregationBindingInfo,
   PropertyBindingInfo,
 } from "sap/ui/base/ManagedObject";
-import { TypedModel } from "./main.js";
+import { TypedModel } from "./typed_model.js";
 
 const metadata = Symbol("metadata");
 
