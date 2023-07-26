@@ -19,10 +19,6 @@ export class TypedPropertyBindingInfo<T> extends IC<PropertyBindingInfo>() {
     this[metadata] = {
       typedModels: models,
     };
-
-    if (models.length === 1) {
-      this.model = models[0].name;
-    }
   }
 
   [metadata]: {
@@ -40,8 +36,6 @@ export class TypedAggregationBindingInfo<
     this[metadata] = {
       typedModel: model,
     };
-
-    this.model = model.name;
   }
 
   [metadata]: {
