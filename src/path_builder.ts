@@ -3,7 +3,7 @@ const pathSym = Symbol("path");
 export type Path<T> = {
   [pathSym]: string;
 } & {
-  [K in Extract<keyof T, string>]: Path<T[K]>;
+  [K in Extract<keyof T, string | number>]: Path<T[K]>;
 };
 
 export function createPathBuilder<T>(path: string): Path<T> {
