@@ -1,3 +1,4 @@
+import "@wdio/globals/types";
 import { expect } from "@wdio/globals";
 import "./load_ui5.js";
 import { TypedModel } from "../test_dist/main.js";
@@ -60,7 +61,7 @@ describe("TypedModel", () => {
     expect(rowModel.get((_, context) => context.name)).toEqual("Yichuan");
     rowModel.set((_, context) => context.points, 500);
     expect(rowModel.get((_, context) => context.points)).toEqual(500);
-    
+
     expect(rowModel.get((data) => data.nested.arr[0].points)).toEqual(500);
     expect(rowModel.get((data) => data.nested.arr[1].points)).toEqual(15);
   });
