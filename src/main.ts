@@ -32,12 +32,16 @@ export class TypedModel<T extends object, C extends object = never> {
     return this;
   }
 
-  createContextModel<U extends object>(
+  createContextModel<U>(
     f: PathBuilder<T, C, U>
-  ): TypedModel<T, U> {
+  ): U extends object ? TypedModel<T, U> : never {
     const path = getPath(f(createPathBuilder("/"), createPathBuilder("")));
     const newContext = this.model.createBindingContext(path, this.context)!;
-    const model = new TypedModel<T, U>(this.name, this.model, newContext);
+    const model = new TypedModel<T, U extends object ? U : never>(
+      this.name,
+      this.model,
+      newContext
+    ) as U extends object ? TypedModel<T, U> : never;
 
     return model;
   }
