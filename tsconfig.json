@@ -3,6 +3,7 @@
     "rootDir": "./",
     "target": "es2022",
     "module": "node16",
+    "skipLibCheck": true,
     "strict": true,
     "sourceMap": true,
     "declaration": true,

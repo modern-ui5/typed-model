@@ -1,16 +1,16 @@
 const pathSym = Symbol("path");
 
-export type Path<T> = {
-  [pathSym]: string;
-} & {
-  [K in Extract<keyof T, string | number>]: Path<T[K]>;
-};
+export type Path<T> = T extends never
+  ? never
+  : {
+      [pathSym]: string;
+    } & {
+      [K in Extract<keyof T, string | number>]: Path<T[K]>;
+    };
 
 export function createPathBuilder<T>(path: string): Path<T> {
   return new Proxy(
-    {
-      [pathSym]: path,
-    } as Path<T>,
+    { [pathSym]: path },
     {
       get(target, name) {
         return typeof name === "symbol"
@@ -18,7 +18,7 @@ export function createPathBuilder<T>(path: string): Path<T> {
           : createPathBuilder(`${path}/${name}`);
       },
     }
-  );
+  ) as Path<T>;
 }
 
 export function getPath<T>(builder: Path<T>): string {
