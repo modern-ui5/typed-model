@@ -79,12 +79,12 @@ export class TypedModel<
   }
 
   /**
-   * Sets this model on the given object with the given name.
+   * Binds this model to the given object with the given name.
    *
-   * @param obj The UI5 object to set on.
+   * @param obj The UI5 object to bind to.
    * @param name The name of the model which must be a non-empty string or `undefined`.
    */
-  setOn(
+  bindTo(
     obj: { setModel(model: Model, name?: string): void },
     name?: string
   ): this {
