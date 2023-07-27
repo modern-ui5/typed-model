@@ -37,6 +37,7 @@ describe("TypedModel", () => {
       ],
     });
 
+    expect(model.path((data) => data.arr[5])).toEqual("/arr/5");
     expect(model.get((data) => data.arr[0])).toEqual({ row: 0, msg: "hello" });
 
     model.set((data) => data.arr[1].msg, "bye!");
@@ -44,6 +45,8 @@ describe("TypedModel", () => {
 
     model.set((data) => data.arr[2], { row: 2, msg: "bye bye!" });
     expect(model.get((data) => data.arr[2].msg)).toEqual("bye bye!");
+
+    expect(model.get((data) => data.arr[3].msg)).toEqual(undefined);
   });
 
   it("should be able to create context models", async () => {
@@ -58,7 +61,13 @@ describe("TypedModel", () => {
 
     const rowModel = model.createContextModel((data) => data.nested.arr[0]);
 
+    expect(rowModel.get((_, context) => context)).toEqual({
+      name: "Yichuan",
+      points: 20,
+    });
+
     expect(rowModel.get((_, context) => context.name)).toEqual("Yichuan");
+
     rowModel.set((_, context) => context.points, 500);
     expect(rowModel.get((_, context) => context.points)).toEqual(500);
 

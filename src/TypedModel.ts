@@ -50,7 +50,10 @@ export class TypedModel<T extends object, C extends object = never> {
     return this.model.getProperty(path, this.context);
   }
 
-  set<U>(f: PathBuilder<T, C, U>, value: U): this {
+  set<P extends PathBuilder<T, C, unknown>>(
+    f: P,
+    value: P extends PathBuilder<T, C, infer U> ? U : never
+  ): this {
     const path = this.path(f);
     this.model.setProperty(path, value, this.context);
     return this;
@@ -67,7 +70,7 @@ export class TypedModel<T extends object, C extends object = never> {
 
   binding<U>(
     f: PathBuilder<T, C, U>,
-    opts?: Omit<PropertyBindingInfo, "path" | "value" | "parts">
+    opts?: Omit<PropertyBindingInfo, "path" | "value" | "parts" | "formatter">
   ): TypedPropertyBindingInfo<U> {
     const result = new TypedPropertyBindingInfo<U>(this);
 

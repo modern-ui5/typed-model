@@ -28,6 +28,13 @@ export class TypedPropertyBindingInfo<T>
     _type?: T;
     typedModels: TypedModel<any, any>[];
   };
+
+  map<U>(f: (value: T) => U): TypedPropertyBindingInfo<U> {
+    const result = new TypedPropertyBindingInfo<U>(this[metadata].typedModels);
+    result.formatter = f;
+
+    return result;
+  }
 }
 
 export class TypedAggregationBindingInfo<T>

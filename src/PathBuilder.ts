@@ -1,20 +1,25 @@
 declare const typeSym: unique symbol;
 const pathSym = Symbol("path");
 
-export type Path<T> = T extends never
-  ? never
-  : {
-      [typeSym]?: T;
-      [pathSym]: string;
-    } & (T extends unknown[]
-      ? {
-          [K in Extract<keyof T, number>]: Path<T[K]>;
-        }
-      : T extends object
-      ? {
-          [K in Extract<keyof T, string | number>]: Path<T[K]>;
-        }
-      : {});
+interface PathType<T> {
+  [typeSym]?: [T];
+  [pathSym]: string;
+}
+
+type U<T> = Exclude<T, undefined>;
+
+export type Path<T> = PathType<T extends never ? never : T> &
+  (U<T> extends unknown[]
+    ? {
+        [K in Extract<keyof U<T>, number>]: Path<U<T>[K] | undefined>;
+      }
+    : U<T> extends object
+    ? {
+        [K in Extract<keyof U<T>, string | number>]: Path<
+          U<T>[K] | Extract<T, undefined>
+        >;
+      }
+    : {});
 
 export function createPathBuilder<T>(
   path: string,
