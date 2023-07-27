@@ -1,7 +1,7 @@
 import "@wdio/globals/types";
 import "./loadUi5.js";
 import { expect } from "@wdio/globals";
-import { TypedModel, expressionBinding } from "../test_dist/main.js";
+import { TypedModel, expressionBinding } from "./dist/main.js";
 
 describe("TypedModel", () => {
   it("should be able to get and set properties", async () => {
