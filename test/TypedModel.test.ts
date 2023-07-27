@@ -1,6 +1,6 @@
 import "@wdio/globals/types";
+import "./loadUi5.js";
 import { expect } from "@wdio/globals";
-import "./load_ui5.js";
 import { TypedModel } from "../test_dist/main.js";
 
 describe("TypedModel", () => {

@@ -2,13 +2,16 @@ import {
   AggregationBindingInfo,
   PropertyBindingInfo,
 } from "sap/ui/base/ManagedObject";
-import { TypedModel } from "./typed_model.js";
+import { TypedModel } from "./TypedModel.js";
 
 const metadata = Symbol("metadata");
 
-const IC = <T>(): new () => T => class {} as any;
+const Base = <T>(): new () => T => class {} as any;
 
-export class TypedPropertyBindingInfo<T> extends IC<PropertyBindingInfo>() {
+export class TypedPropertyBindingInfo<T>
+  extends Base<PropertyBindingInfo>()
+  implements PropertyBindingInfo
+{
   constructor(model: TypedModel<any, any>);
   constructor(models: TypedModel<any, any>[]);
   constructor(model: TypedModel<any, any> | TypedModel<any, any>[]) {
@@ -27,9 +30,10 @@ export class TypedPropertyBindingInfo<T> extends IC<PropertyBindingInfo>() {
   };
 }
 
-export class TypedAggregationBindingInfo<
-  T
-> extends IC<AggregationBindingInfo>() {
+export class TypedAggregationBindingInfo<T>
+  extends Base<AggregationBindingInfo>()
+  implements AggregationBindingInfo
+{
   constructor(model: TypedModel<any, any>) {
     super();
 

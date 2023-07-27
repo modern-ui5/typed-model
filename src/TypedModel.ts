@@ -1,10 +1,10 @@
 import Context from "sap/ui/model/Context";
 import JSONModel from "sap/ui/model/json/JSONModel";
-import { Path, createPathBuilder, getPath } from "./path_builder.js";
+import { Path, createPathBuilder, getPath } from "./PathBuilder.js";
 import {
   TypedAggregationBindingInfo,
   TypedPropertyBindingInfo,
-} from "./typed_binding_info.js";
+} from "./TypedBindingInfo.js";
 import ManagedObject, {
   AggregationBindingInfo,
   PropertyBindingInfo,

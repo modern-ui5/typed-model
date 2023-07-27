@@ -5,7 +5,7 @@
   "type": "module",
   "browser": "./dist/main.js",
   "scripts": {
-    "build": "tsc --project ./tsconfig.json --noEmit && tsc --project ./tsconfig.build.json",
+    "build": "npm run build-test && tsc --project ./tsconfig.json --noEmit && tsc --project ./tsconfig.build.json",
     "build-test": "babel ./src --out-dir ./test_dist --extensions .ts && tsc --project ./tsconfig.test.json",
     "test": "npm run build-test && wdio run ./wdio.conf.js"
   },

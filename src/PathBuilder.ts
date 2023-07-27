@@ -1,4 +1,4 @@
-const typeSym = Symbol("type");
+declare const typeSym: unique symbol;
 const pathSym = Symbol("path");
 
 export type Path<T> = T extends never

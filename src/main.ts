@@ -1,2 +1,2 @@
-export * from "./typed_model.js";
-export * from "./typed_binding_info.js";
+export * from "./TypedModel.js";
+export * from "./TypedBindingInfo.js";
