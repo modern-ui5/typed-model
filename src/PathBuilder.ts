@@ -1,6 +1,6 @@
 const pathSym = Symbol("path");
 
-interface PathType<T> {
+interface PathType<out T> {
   [pathSym]: string;
 }
 

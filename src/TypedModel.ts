@@ -20,6 +20,29 @@ import {
 const rootPathBuilder = createPathBuilder<any>("/");
 const relativePathBuilder = createPathBuilder<any>("");
 
+let trackedGetters:
+  | {
+      typedModel: TypedModel<any, any>;
+      path: string;
+    }[]
+  | undefined;
+
+/**
+ * @private
+ */
+export function _startGetterTracking(): void {
+  trackedGetters = [];
+}
+
+/**
+ * @private
+ */
+export function _stopGetterTracking(): typeof trackedGetters {
+  const result = trackedGetters;
+  trackedGetters = undefined;
+  return result;
+}
+
 /**
  * A strictly typed wrapper of a UI5 JSON model.
  *
@@ -108,6 +131,13 @@ export class TypedModel<
    * @param path The path to the property.
    */
   get<U>(path: PathBuilder<T, C, U>): U {
+    if (trackedGetters != null) {
+      trackedGetters.push({
+        typedModel: this,
+        path: this.path(path),
+      });
+    }
+
     return this.model.getProperty(this.path(path), this.context);
   }
 
