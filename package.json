@@ -4,6 +4,7 @@
   "description": "A strictly typed wrapper of a UI5 model",
   "type": "module",
   "browser": "./dist/main.js",
+  "types": "./dist/main.d.ts",
   "scripts": {
     "build": "npm run build-test && tsc --project ./tsconfig.json --noEmit && tsc --project ./tsconfig.build.json",
     "build-test": "babel ./src --out-dir ./test_dist --extensions .ts && tsc --project ./tsconfig.test.json",
@@ -27,6 +28,9 @@
     "url": "https://github.com/yishn/typed-model/issues"
   },
   "homepage": "https://github.com/yishn/typed-model#readme",
+  "peerDependencies": {
+    "typescript": ">= 5.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.22.9",
     "@babel/core": "^7.22.9",
