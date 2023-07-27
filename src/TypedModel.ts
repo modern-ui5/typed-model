@@ -11,31 +11,36 @@ import ManagedObject, {
 } from "sap/ui/base/ManagedObject";
 import Model from "sap/ui/model/Model";
 
-export type PathBuilder<T, C, U> = (data: Path<T>, context: Path<C>) => Path<U>;
+export type PathBuilder<T, C, U> = Exclude<C, undefined> extends never
+  ? (data: Path<T>) => Path<U>
+  : (data: Path<T>, context: Path<C>) => Path<U>;
 
 const rootPathBuilder = createPathBuilder<any>("/");
 const relativePathBuilder = createPathBuilder<any>("");
 
 export class TypedModel<
   T extends object,
-  C extends object | undefined = never
+  C extends object | undefined = undefined
 > {
   constructor(data: T);
-  constructor(model: JSONModel, context?: Context);
+  constructor(
+    model: JSONModel,
+    context?: Exclude<C, undefined> extends never ? undefined : Context
+  );
   constructor(data: T | JSONModel, context?: Context) {
     this.model = data instanceof JSONModel ? data : new JSONModel(data);
-    this.context = context;
+    this.context = context as any;
   }
 
   readonly model: JSONModel;
-  readonly context?: Context;
+  readonly context: Exclude<C, undefined> extends never ? undefined : Context;
 
   createContextModel<U extends object | undefined>(
     f: PathBuilder<T, C, U>
   ): TypedModel<T, U> {
     const path = this.path(f);
     const newContext = this.model.createBindingContext(path, this.context)!;
-    const model = new TypedModel<T, U>(this.model, newContext);
+    const model = new TypedModel<T, U>(this.model, newContext as any);
 
     return model;
   }
@@ -49,9 +54,7 @@ export class TypedModel<
   }
 
   path<U>(f: PathBuilder<T, C, U>): string {
-    return getPath(
-      f(rootPathBuilder as Path<T>, relativePathBuilder as Path<C>)
-    );
+    return getPath(f(rootPathBuilder as Path<T>, relativePathBuilder as any));
   }
 
   get<U>(f: PathBuilder<T, C, U>): U {
@@ -97,7 +100,7 @@ export class TypedModel<
 
     result.path = this.path(f);
     result.factory = (id, context) =>
-      factory(id, new TypedModel<T, U>(this.model, context));
+      factory(id, new TypedModel<T, U>(this.model, context as any));
 
     return Object.assign(result, opts);
   }

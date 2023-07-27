@@ -74,4 +74,43 @@ describe("TypedModel", () => {
     expect(rowModel.get((data) => data.nested.arr[0].points)).toEqual(500);
     expect(rowModel.get((data) => data.nested.arr[1].points)).toEqual(15);
   });
+
+  it("should be able to create property bindings", async () => {
+    const model = new TypedModel({
+      hello: "world",
+      count: 0,
+    });
+
+    const binding1 = model.binding((data) => data.hello);
+    expect(binding1.path).toEqual("/hello");
+
+    const binding2 = model
+      .binding((data) => data.count)
+      .map((count) => count > 0);
+
+    expect(binding2.formatter).not.toBeUndefined();
+    expect(binding2.formatter!(-1)).toEqual(false);
+    expect(binding2.formatter!(1)).toEqual(true);
+  });
+
+  it("should be able to create aggregation bindings", async () => {
+    const model = new TypedModel({
+      arr: [
+        { name: "Yichuan", points: 20 },
+        { name: "Ryan", points: 15 },
+      ],
+    });
+
+    const Button = class {} as typeof import("sap/m/Button").default;
+    const binding = model.aggregationBinding(
+      (data) => data.arr,
+      (id, model) =>
+        new Button(id, {
+          text: model.binding((_, context) => context.name),
+        })
+    );
+
+    expect(binding.path).toEqual("/arr");
+    expect(binding.factory).not.toBeUndefined();
+  });
 });
