@@ -7,22 +7,16 @@ import type {
   PropertyBindingInfo,
 } from "sap/ui/base/ManagedObject";
 
-import { Path, createPathBuilder, getPath } from "./PathBuilder.js";
+import {
+  Path,
+  PathBuilder,
+  createPathBuilder,
+  getPath,
+} from "./PathBuilder.js";
 import {
   TypedAggregationBindingInfo,
   TypedPropertyBindingInfo,
 } from "./TypedBindingInfo.js";
-
-/**
- * A function with which a property path can be constructed using dot-notation.
- *
- * @template T The type of the model data.
- * @template C The type of the context data.
- * @template U The type of the selected property.
- */
-export type PathBuilder<T, C, U> = Exclude<C, undefined> extends never
-  ? (data: Path<T>) => Path<U>
-  : (data: Path<T>, context: Path<C>) => Path<U>;
 
 const rootPathBuilder = createPathBuilder<any>("/");
 const relativePathBuilder = createPathBuilder<any>("");
@@ -154,7 +148,7 @@ export class TypedModel<
 
   /**
    * Creates a new property binding info object.
-   * 
+   *
    * @param path The path to the property.
    * @param opts The binding options.
    */
@@ -171,7 +165,7 @@ export class TypedModel<
 
   /**
    * Creates a new aggregation binding info object.
-   * 
+   *
    * @param path The path to the array property.
    * @param factory The factory function which returns a new UI5 Control with the given `id`.
    * @param opts The binding options.
