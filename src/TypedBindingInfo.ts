@@ -1,10 +1,8 @@
-import {
+import type {
   AggregationBindingInfo,
   PropertyBindingInfo,
 } from "sap/ui/base/ManagedObject";
 import { TypedModel } from "./TypedModel.js";
-
-const metadata = Symbol("metadata");
 
 const Base = <T>(): new () => T => class {} as any;
 
@@ -12,26 +10,17 @@ export class TypedPropertyBindingInfo<T>
   extends Base<PropertyBindingInfo>()
   implements PropertyBindingInfo
 {
-  constructor(model: TypedModel<any, any>);
-  constructor(models: TypedModel<any, any>[]);
-  constructor(model: TypedModel<any, any> | TypedModel<any, any>[]) {
+  constructor(public readonly typedModel?: TypedModel<any, any>) {
     super();
-
-    const models = Array.isArray(model) ? model : [model];
-
-    this[metadata] = {
-      typedModels: models,
-    };
   }
 
-  [metadata]: {
-    _type?: T;
-    typedModels: TypedModel<any, any>[];
-  };
-
   map<U>(f: (value: T) => U): TypedPropertyBindingInfo<U> {
-    const result = new TypedPropertyBindingInfo<U>(this[metadata].typedModels);
-    result.formatter = f;
+    const result = new TypedPropertyBindingInfo<U>(this.typedModel);
+    const formatter = this.formatter;
+
+    Object.assign(result, this);
+    result.formatter =
+      formatter == null ? f : (...args: unknown[]) => f(formatter(...args));
 
     return result;
   }
@@ -41,18 +30,9 @@ export class TypedAggregationBindingInfo<T>
   extends Base<AggregationBindingInfo>()
   implements AggregationBindingInfo
 {
-  constructor(model: TypedModel<any, any>) {
+  constructor(public readonly typedModel: TypedModel<any, any>) {
     super();
-
-    this[metadata] = {
-      typedModel: model,
-    };
   }
-
-  [metadata]: {
-    _type?: T;
-    typedModel: TypedModel<any, any>;
-  };
 }
 
 export function expressionBinding<
@@ -72,11 +52,7 @@ export function expressionBinding<
   ) => T,
   opts?: Omit<PropertyBindingInfo, "path" | "model" | "value" | "parts">
 ): TypedPropertyBindingInfo<T> {
-  const result = new TypedPropertyBindingInfo<T>(
-    ([] as TypedModel<any, any>[]).concat(
-      ...parts.map((info) => info[metadata].typedModels)
-    )
-  );
+  const result = new TypedPropertyBindingInfo<T>();
 
   result.parts = parts as any;
   result.formatter = formatter;

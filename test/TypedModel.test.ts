@@ -121,7 +121,7 @@ describe("TypedModel", () => {
       visitors: 10,
     });
 
-    const binding = expressionBinding(
+    const binding1 = expressionBinding(
       [
         model.binding((data) => data.message),
         model.binding((data) => data.name),
@@ -129,7 +129,11 @@ describe("TypedModel", () => {
       (message, name) => `${message}, ${name}!`
     );
 
-    expect(binding.parts?.length).toEqual(2);
-    expect(binding.formatter!("Hello", "Dan")).toEqual("Hello, Dan!");
+    expect(binding1.parts?.length).toEqual(2);
+    expect(binding1.formatter!("Hello", "Dan")).toEqual("Hello, Dan!");
+
+    const binding2 = binding1.map((msg) => msg.length);
+    expect(binding2.parts?.length).toEqual(2);
+    expect(binding2.formatter!("Hello", "Dan")).toEqual("Hello, Dan!".length);
   });
 });
