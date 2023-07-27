@@ -1,7 +1,7 @@
 import "@wdio/globals/types";
 import "./loadUi5.js";
 import { expect } from "@wdio/globals";
-import { TypedModel } from "../test_dist/main.js";
+import { TypedModel, expressionBinding } from "../test_dist/main.js";
 
 describe("TypedModel", () => {
   it("should be able to get and set properties", async () => {
@@ -112,5 +112,24 @@ describe("TypedModel", () => {
 
     expect(binding.path).toEqual("/arr");
     expect(binding.factory).not.toBeUndefined();
+  });
+
+  it("should be able to create expression bindings", async () => {
+    const model = new TypedModel({
+      message: "Hello World",
+      name: "Yichuan",
+      visitors: 10,
+    });
+
+    const binding = expressionBinding(
+      [
+        model.binding((data) => data.message),
+        model.binding((data) => data.name),
+      ],
+      (message, name) => `${message}, ${name}!`
+    );
+
+    expect(binding.parts?.length).toEqual(2);
+    expect(binding.formatter!("Hello", "Dan")).toEqual("Hello, Dan!");
   });
 });
