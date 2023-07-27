@@ -9,6 +9,7 @@ import ManagedObject, {
   AggregationBindingInfo,
   PropertyBindingInfo,
 } from "sap/ui/base/ManagedObject";
+import Model from "sap/ui/model/Model";
 
 export type PathBuilder<T, C, U> = (data: Path<T>, context: Path<C>) => Path<U>;
 
@@ -37,6 +38,14 @@ export class TypedModel<T extends object, C extends object = never> {
     ) as U extends object ? TypedModel<T, U> : never;
 
     return model;
+  }
+
+  setOn(
+    obj: { setModel(model: Model, name?: string): void },
+    name?: string
+  ): this {
+    obj.setModel(this.model, name);
+    return this;
   }
 
   path<U>(f: PathBuilder<T, C, U>): string {
