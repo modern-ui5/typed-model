@@ -121,7 +121,7 @@ It is possible to create composite bindings with the helper function
 `expressionBinding`:
 
 ```ts
-import { expressionBinding } from "ui5-typed-model";
+import { compositeBinding } from "ui5-typed-model";
 
 // ...
 
@@ -129,7 +129,7 @@ const text = new Text();
 
 text.bindProperty(
   "text",
-  expressionBinding(
+  compositeBinding(
     [model.binding((data) => data.message), model.binding((data) => data.name)],
     (message, name) => `${message}, ${name}!`
   )

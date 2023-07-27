@@ -9,7 +9,7 @@ const Base = <T>(): new () => T => class {} as any;
 /**
  * Represents a property binding info object with property type.
  *
- * Use {@link TypedModel.binding} or {@link expressionBinding} to create an instance.
+ * Use {@link TypedModel.binding} or {@link compositeBinding} to create an instance.
  */
 export class TypedPropertyBindingInfo<T>
   extends Base<PropertyBindingInfo>()
@@ -73,7 +73,7 @@ export class TypedAggregationBindingInfo<T>
  * @param formatter Function to convert source data into a property value.
  * @param opts The binding options.
  */
-export function expressionBinding<
+export function compositeBinding<
   const P extends readonly [
     TypedPropertyBindingInfo<unknown>,
     ...TypedPropertyBindingInfo<unknown>[]

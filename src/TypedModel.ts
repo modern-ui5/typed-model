@@ -1,6 +1,5 @@
 import JSONModel from "sap/ui/model/json/JSONModel";
 import type Context from "sap/ui/model/Context";
-import type Model from "sap/ui/model/Model";
 import type ManagedObject from "sap/ui/base/ManagedObject";
 import type {
   AggregationBindingInfo,
@@ -85,7 +84,7 @@ export class TypedModel<
    * @param name The name of the model which must be a non-empty string or `undefined`.
    */
   bindTo(
-    obj: { setModel(model: Model, name?: string): void },
+    obj: { setModel(model: JSONModel, name?: string): void },
     name?: string
   ): this {
     obj.setModel(this.model, name);

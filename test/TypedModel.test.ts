@@ -1,7 +1,7 @@
 import "@wdio/globals/types";
 import "./loadUi5.js";
 import { expect } from "@wdio/globals";
-import { TypedModel, expressionBinding } from "./dist/main.js";
+import { TypedModel, compositeBinding } from "./dist/main.js";
 
 describe("TypedModel", () => {
   it("should be able to get and set properties", async () => {
@@ -13,6 +13,8 @@ describe("TypedModel", () => {
         row: 0,
       },
     });
+
+    model.bindTo(sap.ui.getCore());
 
     expect(model.path((data) => data)).toEqual("/");
     expect(model.path((data) => data.hello)).toEqual("/hello");
@@ -121,7 +123,7 @@ describe("TypedModel", () => {
       visitors: 10,
     });
 
-    const binding1 = expressionBinding(
+    const binding1 = compositeBinding(
       [
         model.binding((data) => data.message),
         model.binding((data) => data.name),
