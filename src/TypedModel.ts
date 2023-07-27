@@ -16,7 +16,10 @@ export type PathBuilder<T, C, U> = (data: Path<T>, context: Path<C>) => Path<U>;
 const rootPathBuilder = createPathBuilder<any>("/");
 const relativePathBuilder = createPathBuilder<any>("");
 
-export class TypedModel<T extends object, C extends object = never> {
+export class TypedModel<
+  T extends object,
+  C extends object | undefined = never
+> {
   constructor(data: T);
   constructor(model: JSONModel, context?: Context);
   constructor(data: T | JSONModel, context?: Context) {
@@ -27,15 +30,12 @@ export class TypedModel<T extends object, C extends object = never> {
   readonly model: JSONModel;
   readonly context?: Context;
 
-  createContextModel<U>(
+  createContextModel<U extends object | undefined>(
     f: PathBuilder<T, C, U>
-  ): U extends object ? TypedModel<T, U> : never {
+  ): TypedModel<T, U> {
     const path = this.path(f);
     const newContext = this.model.createBindingContext(path, this.context)!;
-    const model = new TypedModel<T, U extends object ? U : never>(
-      this.model,
-      newContext
-    ) as U extends object ? TypedModel<T, U> : never;
+    const model = new TypedModel<T, U>(this.model, newContext);
 
     return model;
   }
