@@ -21,11 +21,15 @@ describe("TypedModel", () => {
     expect(model.path((data) => data.nested.msg)).toEqual("/nested/msg");
 
     expect(model.get((data) => data.hello)).toEqual("world");
+    expect(model.get("/hello")).toEqual("world");
     expect(model.get((data) => data.count)).toEqual(0);
+    expect(model.get("/count")).toEqual(0);
     expect(model.get((data) => data.nested)).toEqual({
       msg: "nested message",
       row: 0,
     });
+    expect(model.get((data) => data.nested.row)).toEqual(0);
+    expect(model.get("/nested/row")).toEqual(0);
 
     model.set((data) => data.count, 100);
     expect(model.get((data) => data.count)).toEqual(100);
