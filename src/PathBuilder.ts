@@ -62,6 +62,6 @@ export function createPathBuilder<T>(
   ) as Path<T>;
 }
 
-export function getPath<T>(builder: Path<T>): string {
-  return builder[pathSym];
+export function getPath<T>(path: Path<T>): string {
+  return path[pathSym];
 }
