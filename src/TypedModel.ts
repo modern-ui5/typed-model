@@ -89,7 +89,7 @@ export class TypedModel<
    * @param path The property path for the context.
    */
   createContextModel<U extends object | undefined>(
-    path: PathBuilder<T, C, U>
+    path: PathBuilder<T, C, U> | string
   ): TypedModel<T, U> {
     const newContext = this.model.createBindingContext(
       this.path(path),
@@ -119,10 +119,10 @@ export class TypedModel<
    *
    * @param path The path in dot-notation.
    */
-  path<U>(path: PathBuilder<T, C, U>): string {
-    return getPath(
-      path(rootPathBuilder as Path<T>, relativePathBuilder as any)
-    );
+  path<U>(path: PathBuilder<T, C, U> | string): string {
+    return typeof path === "string"
+      ? path
+      : getPath(path(rootPathBuilder as Path<T>, relativePathBuilder as any));
   }
 
   /**
@@ -130,7 +130,7 @@ export class TypedModel<
    *
    * @param path The path to the property.
    */
-  get<U>(path: PathBuilder<T, C, U>): U {
+  get<U>(path: PathBuilder<T, C, U> | string): U {
     if (trackedGetters != null) {
       trackedGetters.push({
         typedModel: this,
@@ -148,7 +148,7 @@ export class TypedModel<
    * @param value The new value to be set for this property.
    * @param asyncUpdate Whether to update other bindings dependent on this property asynchronously.
    */
-  set<P extends PathBuilder<T, C, unknown>>(
+  set<P extends PathBuilder<T, C, unknown> | string>(
     path: P,
     value: P extends PathBuilder<T, C, infer U> ? U : never,
     asyncUpdate?: boolean
@@ -182,7 +182,7 @@ export class TypedModel<
    * @param opts The binding options.
    */
   binding<U>(
-    path: PathBuilder<T, C, U>,
+    path: PathBuilder<T, C, U> | string,
     opts?: Omit<PropertyBindingInfo, "path" | "value" | "parts" | "formatter">
   ): TypedPropertyBindingInfo<U> {
     const result = new TypedPropertyBindingInfo<U>(this);
@@ -200,7 +200,7 @@ export class TypedModel<
    * @param opts The binding options.
    */
   aggregationBinding<U extends object, O extends ManagedObject>(
-    path: PathBuilder<T, C, U[]>,
+    path: PathBuilder<T, C, U[]> | string,
     factory: (id: string, model: TypedModel<T, U>) => O,
     opts?: Omit<AggregationBindingInfo, "path" | "template" | "factory">
   ): TypedAggregationBindingInfo<O> {
