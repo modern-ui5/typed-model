@@ -26,9 +26,9 @@
   "author": "Yichuan Shen",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yishn/typed-model/issues"
+    "url": "https://github.com/modern-ui5/ui5-typed-model/issues"
   },
-  "homepage": "https://github.com/yishn/typed-model#readme",
+  "homepage": "https://github.com/modern-ui5/ui5-typed-model#readme",
   "devDependencies": {
     "@babel/cli": "^7.22.9",
     "@babel/core": "^7.22.9",
