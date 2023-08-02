@@ -176,6 +176,19 @@ export class TypedModel<
   }
 
   /**
+   * Refreshes the model.
+   *
+   * This will check all bindings for updated data and update the controls if
+   * data has been changed.
+   *
+   * @param force Update controls even if data has not been changed.
+   */
+  refresh(force?: boolean): this {
+    this.model.refresh(force);
+    return this;
+  }
+
+  /**
    * Creates a new property binding info object.
    *
    * @param path The path to the property.
