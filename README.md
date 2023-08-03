@@ -91,9 +91,10 @@ vbox.bindAggregation(
     (id, model) => {
       const text = new Text(id);
 
+      text.setBindingContext(model.context);
       text.bindProperty(
         "text",
-        model.get((_, context) => context.email)
+        model.binding((_, context) => context.email)
       );
 
       return text;
