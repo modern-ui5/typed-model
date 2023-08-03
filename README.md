@@ -56,10 +56,13 @@ model.bindTo(sap.ui.getCore());
 You can safely get and set property values using typed path builders:
 
 ```ts
-const name: string = model.get((data) => data.name);
-const contactEmail: string | undefined = model.get(
+const name = model.get((data) => data.name);
+// name: string
+
+const contactEmail = model.get(
   (data) => data.contacts[0].email
 );
+// contactEmail: string | undefined
 
 model.set((data) => data.message, "Hello");
 ```
