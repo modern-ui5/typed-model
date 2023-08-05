@@ -74,10 +74,7 @@ export class TypedAggregationBindingInfo<T>
  * @param opts The binding options.
  */
 export function compositeBinding<
-  const P extends readonly [
-    TypedPropertyBindingInfo<unknown>,
-    ...TypedPropertyBindingInfo<unknown>[]
-  ],
+  const P extends readonly TypedPropertyBindingInfo<unknown>[],
   T
 >(
   parts: P,

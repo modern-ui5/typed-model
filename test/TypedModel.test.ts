@@ -2,6 +2,8 @@ import "@wdio/globals/types";
 import "./loadUi5.js";
 import { expect } from "@wdio/globals";
 import { TypedModel, compositeBinding } from "./dist/main.js";
+import Button from "sap/m/Button";
+import VBox from "sap/m/VBox";
 
 describe("TypedModel", () => {
   it("should be able to get and set properties", async () => {
@@ -82,32 +84,47 @@ describe("TypedModel", () => {
   });
 
   it("should be able to create property bindings", async () => {
+    const button = new Button().placeAt(document.body);
     const model = new TypedModel({
       hello: "world",
       count: 0,
-    });
+    }).bindTo(button);
 
     const binding1 = model.binding((data) => data.hello);
     expect(binding1.path).toEqual("/hello");
 
+    button.bindProperty("text", binding1);
+    expect(button.getText()).toEqual("world");
+
+    model.set((data) => data.hello, "bye");
+    expect(button.getText()).toEqual("bye");
+
     const binding2 = model
       .binding((data) => data.count)
-      .map((count) => count > 0);
+      .map((count) => (count > 0 ? "yes" : "no"));
 
     expect(binding2.formatter).not.toBeUndefined();
-    expect(binding2.formatter!(-1)).toEqual(false);
-    expect(binding2.formatter!(1)).toEqual(true);
+    expect(binding2.formatter!(-1)).toEqual("no");
+    expect(binding2.formatter!(1)).toEqual("yes");
+
+    button.bindProperty("text", binding2);
+    expect(button.getText()).toEqual("no");
+
+    model.set((data) => data.count, 1);
+    expect(button.getText()).toEqual("yes");
+
+    button.destroy();
   });
 
   it("should be able to create aggregation bindings", async () => {
+    const vbox = new VBox().placeAt(document.body);
     const model = new TypedModel({
       arr: [
         { name: "Yichuan", points: 20 },
         { name: "Ryan", points: 15 },
       ],
-    });
+    }).bindTo(vbox);
 
-    const Button = class {} as typeof import("sap/m/Button").default;
     const binding = model.aggregationBinding(
       (data) => data.arr,
       (id, model) =>
@@ -117,15 +134,25 @@ describe("TypedModel", () => {
     );
 
     expect(binding.path).toEqual("/arr");
-    expect(binding.factory).not.toBeUndefined();
+
+    vbox.bindAggregation("items", binding);
+    expect(vbox.getItems().length).toEqual(2);
+
+    const arr = model.get((data) => data.arr);
+    arr.push({ name: "Dan", points: 100 });
+    model.refresh();
+    expect(vbox.getItems().length).toEqual(3);
+
+    vbox.destroy();
   });
 
   it("should be able to create expression bindings", async () => {
+    const button = new Button().placeAt(document.body);
     const model = new TypedModel({
       message: "Hello World",
       name: "Yichuan",
       visitors: 10,
-    });
+    }).bindTo(button);
 
     const binding1 = compositeBinding(
       [
@@ -136,10 +163,20 @@ describe("TypedModel", () => {
     );
 
     expect(binding1.parts?.length).toEqual(2);
-    expect(binding1.formatter!("Hello", "Dan")).toEqual("Hello, Dan!");
 
-    const binding2 = binding1.map((msg) => msg.length);
+    button.bindProperty("text", binding1);
+    expect(button.getText()).toEqual("Hello World, Yichuan!");
+
+    model.set((data) => data.message, "Hello");
+    model.set((data) => data.name, "Dan");
+    expect(button.getText()).toEqual("Hello, Dan!");
+
+    const binding2 = binding1.map((msg) => `Length is ${msg.length}`);
     expect(binding2.parts?.length).toEqual(2);
-    expect(binding2.formatter!("Hello", "Dan")).toEqual("Hello, Dan!".length);
+
+    button.bindProperty("text", binding2);
+    expect(button.getText()).toEqual("Length is 11");
+
+    button.destroy();
   });
 });

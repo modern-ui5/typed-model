@@ -8,3 +8,5 @@ await new Promise<void>((resolve) => {
     resolve();
   };
 });
+
+export {};
