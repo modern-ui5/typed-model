@@ -17,7 +17,7 @@ on the [official ESM-style UI5 types](https://sap.github.io/ui5-typescript/)
 `@openui5/types` or `@sapui5/types` which will not be automatically installed.
 
 Furthermore, a code transformation is needed to transform UI5-style ESM imports
-into valid UI5 code, either with Babel and
+into valid UI5 code, e.g. with Babel and either
 [babel-plugin-ui5-esm](https://github.com/modern-ui5/babel-plugin-ui5-esm) or
 [babel-plugin-transform-modules-ui5](https://github.com/ui5-community/babel-plugin-transform-modules-ui5/tree/main).
 
