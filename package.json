@@ -1,6 +1,6 @@
 {
   "name": "ui5-typed-model",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A strictly typed wrapper of a UI5 JSON model",
   "type": "module",
   "browser": "./dist/main.js",
