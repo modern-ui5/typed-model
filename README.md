@@ -122,7 +122,7 @@ text.bindProperty(
 ```
 
 It is possible to create composite bindings with the helper function
-`expressionBinding`:
+`compositeBinding`:
 
 ```ts
 import { compositeBinding } from "ui5-typed-model";
